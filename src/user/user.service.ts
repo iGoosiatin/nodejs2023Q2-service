@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from './interfaces/user.interface';
 import { User as FullUser } from '../interfaces/user.interface';
 import { InMemoryDatabaseService } from 'src/in-memory-database/in-memory-database.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -9,11 +10,18 @@ export class UserService {
   constructor(private dbService: InMemoryDatabaseService) {}
 
   async findAll() {
-    return (await this.dbService.user.findMany()).map(this.removeUserPassword);
+    const users = await this.dbService.user.findMany();
+    return users.map(this.removeUserPassword);
   }
 
   async findOne(id: string): Promise<User> {
     const user = await this.dbService.user.findUnique(id);
+    return this.removeUserPassword(user);
+  }
+
+  async create(dto: CreateUserDto) {
+    const user = await this.dbService.user.create(dto);
+
     return this.removeUserPassword(user);
   }
 
