@@ -1,3 +1,3 @@
-import { User as FullUser } from '../../interfaces/user.interface';
+import { User as FullUser } from '../../common/interfaces/user.interface';
 
 export type User = Omit<FullUser, 'password'>;

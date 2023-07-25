@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { User } from './interfaces/user.interface';
 import { UserNotFoundException } from './errors/user.errors';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UuidParams } from '../common/dto/uuid-param.dto';
 
 @Controller('user')
 export class UserController {
@@ -15,7 +16,7 @@ export class UserController {
   }
 
   @Get(':id')
-  async findUser(@Param('id') id: string): Promise<User> {
+  async findUser(@Param() { id }: UuidParams): Promise<User> {
     const user = await this.userService.findOne(id);
 
     if (!user) {

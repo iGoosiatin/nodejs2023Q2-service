@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './interfaces/user.interface';
-import { User as FullUser } from '../interfaces/user.interface';
+import { User as FullUser } from '../common/interfaces/user.interface';
 import { InMemoryDatabaseService } from 'src/in-memory-database/in-memory-database.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
