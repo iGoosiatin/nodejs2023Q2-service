@@ -1,9 +1,22 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './interfaces/user.interface';
-import { UserNotFoundException } from './errors/user.errors';
+import {
+  UserNotFoundException,
+  WrongPasswordException,
+} from './errors/user.errors';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UuidParams } from '../common/dto/uuid-param.dto';
+import { UpdateUserPassword } from './dto/update-user-password.dto';
 
 @Controller('user')
 export class UserController {
@@ -32,5 +45,42 @@ export class UserController {
     const user = await this.userService.create(createUserDto);
 
     return user;
+  }
+
+  @Put(':id')
+  async updateUserPassword(
+    @Param() { id }: UuidParams,
+    @Body() { oldPassword, newPassword }: UpdateUserPassword,
+  ): Promise<User> {
+    const user = await this.userService.findOne(id);
+
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+
+    const isPasswordCorrect = await this.userService.isPasswordCorrect(
+      id,
+      oldPassword,
+    );
+
+    if (!isPasswordCorrect) {
+      throw new WrongPasswordException();
+    }
+
+    const updatedUser = await this.userService.changePassword(id, newPassword);
+
+    return updatedUser;
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  async removeUser(@Param() { id }: UuidParams): Promise<void> {
+    const success = await this.userService.remove(id);
+
+    if (!success) {
+      throw new UserNotFoundException();
+    }
+
+    return;
   }
 }

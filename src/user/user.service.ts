@@ -25,6 +25,21 @@ export class UserService {
     return this.removeUserPassword(user);
   }
 
+  async remove(id: string): Promise<boolean> {
+    const user = await this.dbService.user.delete(id);
+    return !!user;
+  }
+
+  async isPasswordCorrect(id: string, password: string): Promise<boolean> {
+    const user = await this.dbService.user.findUnique(id);
+    return user.password === password;
+  }
+
+  async changePassword(id: string, password: string): Promise<User> {
+    const user = await this.dbService.user.update(id, { password });
+    return this.removeUserPassword(user);
+  }
+
   private removeUserPassword(fullUser: FullUser | undefined): User {
     if (!fullUser) {
       return;
