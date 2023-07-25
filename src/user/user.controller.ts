@@ -8,14 +8,14 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  findAll(): User[] {
-    const users = this.userService.findAll();
+  async findAll(): Promise<User[]> {
+    const users = await this.userService.findAll();
     return users;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): User {
-    const user = this.userService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<User> {
+    const user = await this.userService.findOne(id);
 
     if (!user) {
       throw new UserNotFoundException();
