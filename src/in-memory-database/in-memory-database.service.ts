@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../interfaces/user.interface';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { NewUser, User } from '../interfaces/user.interface';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -22,11 +21,12 @@ export class InMemoryDatabaseService {
 
   private findUsers = async () => this.users;
 
-  private createUser = async (newUser: CreateUserDto) => {
+  private createUser = async ({ login, password }: NewUser) => {
     const timestamp = +new Date();
     const user: User = {
       id: uuid(),
-      ...newUser,
+      login,
+      password,
       version: 1,
       createdAt: timestamp,
       updatedAt: timestamp,
