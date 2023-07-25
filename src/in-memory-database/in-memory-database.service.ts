@@ -23,13 +23,17 @@ export class InMemoryDatabaseService {
 
   private findUsers = async () => this.users;
 
-  private createUser = async ({ login, password }: NewUser) => {
+  private createUser = async ({
+    login,
+    password,
+    version,
+  }: NewUser & { version: number }) => {
     const timestamp = +new Date();
     const user: User = {
       id: uuid(),
       login,
       password,
-      version: 1,
+      version,
       createdAt: timestamp,
       updatedAt: timestamp,
     };
@@ -48,7 +52,10 @@ export class InMemoryDatabaseService {
     return user;
   };
 
-  private updateUser = async (id: string, newUserDetails: Partial<User>) => {
+  private updateUser = async (
+    id: string,
+    newUserDetails: Partial<User> & { version: number },
+  ) => {
     const user = this.users.find((user) => user.id === id);
     if (!user) {
       return;
@@ -58,7 +65,6 @@ export class InMemoryDatabaseService {
     const updatedUser: User = {
       ...user,
       ...newUserDetails,
-      version: user.version + 1,
       updatedAt: timestamp,
     };
 

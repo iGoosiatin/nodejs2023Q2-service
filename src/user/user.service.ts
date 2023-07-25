@@ -20,7 +20,10 @@ export class UserService {
   }
 
   async create(dto: CreateUserDto) {
-    const user = await this.dbService.user.create(dto);
+    const user = await this.dbService.user.create({
+      ...dto,
+      version: 1,
+    });
 
     return this.removeUserPassword(user);
   }
@@ -35,8 +38,11 @@ export class UserService {
     return user.password === password;
   }
 
-  async changePassword(id: string, password: string): Promise<User> {
-    const user = await this.dbService.user.update(id, { password });
+  async changePassword({ id, version }: User, password: string): Promise<User> {
+    const user = await this.dbService.user.update(id, {
+      password,
+      version: version + 1,
+    });
     return this.removeUserPassword(user);
   }
 
