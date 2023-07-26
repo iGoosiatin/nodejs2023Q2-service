@@ -7,12 +7,14 @@ import {
 import { v4 as uuid } from 'uuid';
 import { Artist, NewArtist } from 'src/common/interfaces/artist.interface';
 import { Album, NewAlbum } from 'src/common/interfaces/album.interface';
+import { Track, NewTrack } from 'src/common/interfaces/track.interface';
 
 @Injectable()
 export class InMemoryDatabaseService {
   private users: User[] = [];
   private artists: Artist[] = [];
   private albums: Album[] = [];
+  private tracks: Track[] = [];
 
   get user() {
     return {
@@ -41,6 +43,16 @@ export class InMemoryDatabaseService {
       create: this.createAlbum,
       update: this.updateAlbum,
       delete: this.deleteAlbum,
+    };
+  }
+
+  get track() {
+    return {
+      findUnique: this.findTrack,
+      findMany: this.findTracks,
+      create: this.createTrack,
+      update: this.updateTrack,
+      delete: this.deleteTrack,
     };
   }
 
@@ -153,6 +165,9 @@ export class InMemoryDatabaseService {
     this.albums = this.albums.map((album) =>
       album.artistId === id ? { ...album, artistId: null } : album,
     );
+    this.tracks = this.tracks.map((track) =>
+      track.artistId === id ? { ...track, artistId: null } : track,
+    );
     return artist;
   };
 
@@ -201,6 +216,70 @@ export class InMemoryDatabaseService {
     }
 
     this.albums = this.albums.filter((album) => album.id !== id);
+    this.tracks = this.tracks.map((track) =>
+      track.albumId === id ? { ...track, albumId: null } : track,
+    );
     return album;
+  };
+
+  private findTrack = async (id: string): Promise<Track | undefined> => {
+    const track = this.tracks.find((track) => track.id === id);
+    return track;
+  };
+
+  private findTracks = async () => this.tracks;
+
+  private createTrack = async ({
+    name,
+    artistId,
+    albumId,
+    duration,
+  }: NewTrack) => {
+    const track: Track = {
+      id: uuid(),
+      name,
+      artistId,
+      albumId,
+      duration,
+    };
+
+    this.tracks.push(track);
+    return track;
+  };
+
+  private updateTrack = async ({
+    id,
+    name,
+    artistId,
+    albumId,
+    duration,
+  }: Track) => {
+    const track = this.tracks.find((track) => track.id === id);
+    if (!track) {
+      return;
+    }
+
+    const updatedTrack: Track = {
+      ...track,
+      name,
+      artistId,
+      albumId,
+      duration,
+    };
+
+    this.tracks = this.tracks.map((track) =>
+      track.id === id ? updatedTrack : track,
+    );
+    return updatedTrack;
+  };
+
+  private deleteTrack = async (id: string) => {
+    const track = this.tracks.find((track) => track.id === id);
+    if (!track) {
+      return;
+    }
+
+    this.tracks = this.tracks.filter((track) => track.id !== id);
+    return track;
   };
 }

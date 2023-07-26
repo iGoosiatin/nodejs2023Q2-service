@@ -5,17 +5,21 @@ import {
   IsUUID,
   ValidateIf,
 } from 'class-validator';
-import { NewAlbum } from 'src/common/interfaces/album.interface';
+import { NewTrack } from 'src/common/interfaces/track.interface';
 
-export class AlbumDto implements NewAlbum {
+export class TrackDto implements NewTrack {
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @IsNumber()
-  year: number;
-
   @ValidateIf(({ artistId }) => artistId !== null)
   @IsUUID()
   artistId: string | null;
+
+  @ValidateIf(({ albumId }) => albumId !== null)
+  @IsUUID()
+  albumId: string | null;
+
+  @IsNumber()
+  duration: number;
 }
