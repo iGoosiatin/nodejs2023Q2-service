@@ -5,7 +5,6 @@ import { User } from 'src/common/interfaces/user.interface';
 
 @Injectable()
 export class UserService {
-  private users: User[] = [];
   constructor(private dbService: InMemoryDatabaseService) {}
 
   async findAll() {

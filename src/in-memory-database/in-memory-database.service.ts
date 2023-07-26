@@ -15,6 +15,9 @@ export class InMemoryDatabaseService {
   private artists: Artist[] = [];
   private albums: Album[] = [];
   private tracks: Track[] = [];
+  private favArtists: string[] = [];
+  private favAlbums: string[] = [];
+  private favTracks: string[] = [];
 
   get user() {
     return {
@@ -53,6 +56,30 @@ export class InMemoryDatabaseService {
       create: this.createTrack,
       update: this.updateTrack,
       delete: this.deleteTrack,
+    };
+  }
+
+  get favTrack() {
+    return {
+      findMany: this.findFavTracks,
+      create: this.saveFavTrack,
+      delete: this.deleteFavTrack,
+    };
+  }
+
+  get favArtist() {
+    return {
+      findMany: this.findFavArtists,
+      create: this.saveFavArtist,
+      delete: this.deleteFavArtist,
+    };
+  }
+
+  get favAlbum() {
+    return {
+      findMany: this.findFavAlbums,
+      create: this.saveFavAlbum,
+      delete: this.deleteFavAlbum,
     };
   }
 
@@ -168,6 +195,9 @@ export class InMemoryDatabaseService {
     this.tracks = this.tracks.map((track) =>
       track.artistId === id ? { ...track, artistId: null } : track,
     );
+    this.favArtists = this.favArtists.filter(
+      (favArtistId) => favArtistId !== id,
+    );
     return artist;
   };
 
@@ -219,6 +249,7 @@ export class InMemoryDatabaseService {
     this.tracks = this.tracks.map((track) =>
       track.albumId === id ? { ...track, albumId: null } : track,
     );
+    this.favAlbums = this.favAlbums.filter((favAlbumId) => favAlbumId !== id);
     return album;
   };
 
@@ -280,6 +311,69 @@ export class InMemoryDatabaseService {
     }
 
     this.tracks = this.tracks.filter((track) => track.id !== id);
+    this.deleteFavTrack(id);
     return track;
   };
+
+  private findFavTracks = async () => this.favTracks.map(this._getTrack);
+
+  private saveFavTrack = async (id: string) => {
+    this.favTracks.push(id);
+    return this._getTrack(id);
+  };
+
+  private deleteFavTrack = async (id: string) => {
+    const track = this.favTracks.find((favTrackId) => favTrackId === id);
+    if (!track) {
+      return;
+    }
+
+    this.favTracks = this.favTracks.filter((favTrackId) => favTrackId !== id);
+    return this._getTrack(id);
+  };
+
+  private findFavArtists = async () => this.favArtists.map(this._getArtist);
+
+  private saveFavArtist = async (id: string) => {
+    this.favArtists.push(id);
+    return this._getArtist(id);
+  };
+
+  private deleteFavArtist = async (id: string) => {
+    const artist = this.favArtists.find((favArtistId) => favArtistId === id);
+    if (!artist) {
+      return;
+    }
+
+    this.favArtists = this.favArtists.filter(
+      (favArtistId) => favArtistId !== id,
+    );
+    return this._getArtist(id);
+  };
+
+  private findFavAlbums = async () => this.favAlbums.map(this._getAlbum);
+
+  private saveFavAlbum = async (id: string) => {
+    this.favAlbums.push(id);
+    return this._getAlbum(id);
+  };
+
+  private deleteFavAlbum = async (id: string) => {
+    const album = this.favAlbums.find((favAlbumId) => favAlbumId === id);
+    if (!album) {
+      return;
+    }
+
+    this.favAlbums = this.favAlbums.filter((favAlbumId) => favAlbumId !== id);
+    return this._getAlbum(id);
+  };
+
+  private _getTrack = (id: string) =>
+    this.tracks.find((track) => track.id === id) as Track;
+
+  private _getArtist = (id: string) =>
+    this.artists.find((artist) => artist.id === id) as Artist;
+
+  private _getAlbum = (id: string) =>
+    this.albums.find((album) => album.id === id) as Album;
 }
