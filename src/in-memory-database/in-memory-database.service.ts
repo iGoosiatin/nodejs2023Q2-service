@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { NewUser, User } from '../common/interfaces/user.interface';
+import {
+  NewUser,
+  UpdatedUser,
+  User,
+} from '../common/interfaces/user.interface';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -27,15 +31,16 @@ export class InMemoryDatabaseService {
     login,
     password,
     version,
-  }: NewUser & { version: number }) => {
-    const timestamp = +new Date();
+    createdAt,
+    updatedAt,
+  }: NewUser) => {
     const user: User = {
       id: uuid(),
       login,
       password,
       version,
-      createdAt: timestamp,
-      updatedAt: timestamp,
+      createdAt,
+      updatedAt,
     };
 
     this.users.push(user);
@@ -52,20 +57,24 @@ export class InMemoryDatabaseService {
     return user;
   };
 
-  private updateUser = async (
-    id: string,
-    newUserDetails: Partial<User> & { version: number },
-  ) => {
+  private updateUser = async ({
+    id,
+    login,
+    password,
+    updatedAt,
+    version,
+  }: UpdatedUser) => {
     const user = this.users.find((user) => user.id === id);
     if (!user) {
       return;
     }
 
-    const timestamp = +new Date();
     const updatedUser: User = {
       ...user,
-      ...newUserDetails,
-      updatedAt: timestamp,
+      login,
+      password,
+      version,
+      updatedAt,
     };
 
     this.users = this.users.map((user) =>

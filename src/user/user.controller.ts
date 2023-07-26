@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,9 +8,9 @@ import {
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from './interfaces/user.interface';
 import {
   UserNotFoundException,
   WrongPasswordException,
@@ -17,53 +18,50 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UuidParams } from '../common/dto/uuid-param.dto';
 import { UpdateUserPassword } from './dto/update-user-password.dto';
+import { UserEntity } from './entities/user.entity';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  async findUsers(): Promise<User[]> {
+  async findUsers(): Promise<UserEntity[]> {
     const users = await this.userService.findAll();
-    return users;
+    return users.map((user) => new UserEntity(user));
   }
 
   @Get(':id')
-  async findUser(@Param() { id }: UuidParams): Promise<User> {
+  async findUser(@Param() { id }: UuidParams): Promise<UserEntity> {
     const user = await this.userService.findOne(id);
 
     if (!user) {
       throw new UserNotFoundException();
     }
 
-    return user;
+    return new UserEntity(user);
   }
 
   @Post()
   @HttpCode(201)
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     const user = await this.userService.create(createUserDto);
 
-    return user;
+    return new UserEntity(user);
   }
 
   @Put(':id')
   async updateUserPassword(
     @Param() { id }: UuidParams,
     @Body() { oldPassword, newPassword }: UpdateUserPassword,
-  ): Promise<User> {
+  ): Promise<UserEntity> {
     const user = await this.userService.findOne(id);
 
     if (!user) {
       throw new UserNotFoundException();
     }
 
-    const isPasswordCorrect = await this.userService.isPasswordCorrect(
-      id,
-      oldPassword,
-    );
-
-    if (!isPasswordCorrect) {
+    if (oldPassword !== user.password) {
       throw new WrongPasswordException();
     }
 
@@ -72,7 +70,7 @@ export class UserController {
       newPassword,
     );
 
-    return updatedUser;
+    return new UserEntity(updatedUser);
   }
 
   @Delete(':id')

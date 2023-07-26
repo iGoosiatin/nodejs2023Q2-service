@@ -7,4 +7,6 @@ export interface User {
   updatedAt: number; // timestamp of last update
 }
 
-export type NewUser = Pick<User, 'login' | 'password'>;
+export type NewUser = Omit<User, 'id'>;
+
+export type UpdatedUser = Omit<User, 'createdAt'>;
