@@ -13,7 +13,7 @@ export class UserService {
     return users;
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(id: string) {
     const user = await this.dbService.user.findUnique(id);
     return user;
   }
@@ -35,10 +35,7 @@ export class UserService {
     return !!user;
   }
 
-  async changePassword(
-    { id, login, version }: User,
-    password: string,
-  ): Promise<User> {
+  async changePassword({ id, login, version }: User, password: string) {
     const updatedUser = await this.dbService.user.update({
       id,
       login,
@@ -46,6 +43,6 @@ export class UserService {
       version: version + 1,
       updatedAt: +new Date(),
     });
-    return updatedUser;
+    return updatedUser as User;
   }
 }
