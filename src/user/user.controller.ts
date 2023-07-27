@@ -17,21 +17,47 @@ import {
 } from './errors/user.errors';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UuidParams } from '../common/dto/uuid-param.dto';
-import { UpdateUserPassword } from './dto/update-user-password.dto';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { UserEntity } from './entities/user.entity';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  buildCreationDescription,
+  buildDeletionDescription,
+  buildInvalidUuidDescription,
+  buildInvalidUuidOrBodyDescription,
+  buildNotFoundDescrition,
+  missingPropertiesDescription,
+  successOperationDescription,
+} from 'src/utils/apiUtils';
 
+@ApiTags('User')
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
+  @ApiOkResponse({ description: successOperationDescription })
   async findUsers(): Promise<UserEntity[]> {
     const users = await this.userService.findAll();
     return users.map((user) => new UserEntity(user));
   }
 
   @Get(':id')
+  @ApiParam({ name: 'userId', type: String })
+  @ApiOkResponse({ description: successOperationDescription })
+  @ApiBadRequestResponse({
+    description: buildInvalidUuidDescription('userId'),
+  })
+  @ApiNotFoundResponse({ description: buildNotFoundDescrition('User') })
   async findUser(@Param() { id }: UuidParams): Promise<UserEntity> {
     const user = await this.userService.findOne(id);
 
@@ -43,6 +69,10 @@ export class UserController {
   }
 
   @Post()
+  @ApiCreatedResponse({ description: buildCreationDescription('User') })
+  @ApiBadRequestResponse({
+    description: missingPropertiesDescription,
+  })
   @HttpCode(201)
   async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     const user = await this.userService.create(createUserDto);
@@ -51,9 +81,15 @@ export class UserController {
   }
 
   @Put(':id')
+  @ApiParam({ name: 'userId', type: String })
+  @ApiOkResponse({ description: successOperationDescription })
+  @ApiBadRequestResponse({
+    description: buildInvalidUuidOrBodyDescription('userId'),
+  })
+  @ApiNotFoundResponse({ description: buildNotFoundDescrition('User') })
   async updateUserPassword(
     @Param() { id }: UuidParams,
-    @Body() { oldPassword, newPassword }: UpdateUserPassword,
+    @Body() { oldPassword, newPassword }: UpdateUserPasswordDto,
   ): Promise<UserEntity> {
     const user = await this.userService.findOne(id);
 
@@ -74,6 +110,12 @@ export class UserController {
   }
 
   @Delete(':id')
+  @ApiParam({ name: 'userId', type: String })
+  @ApiNoContentResponse({ description: buildDeletionDescription('User') })
+  @ApiNotFoundResponse({ description: buildNotFoundDescrition('User') })
+  @ApiBadRequestResponse({
+    description: buildInvalidUuidDescription('userId'),
+  })
   @HttpCode(204)
   async removeUser(@Param() { id }: UuidParams): Promise<void> {
     const success = await this.userService.remove(id);
