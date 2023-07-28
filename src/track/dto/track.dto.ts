@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsNotEmpty,
@@ -8,18 +9,22 @@ import {
 import { NewTrack } from 'src/common/interfaces/track.interface';
 
 export class TrackDto implements NewTrack {
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty({ nullable: true, type: String, format: 'uuid' })
   @ValidateIf(({ artistId }) => artistId !== null)
   @IsUUID()
   artistId: string | null;
 
+  @ApiProperty({ nullable: true, type: String, format: 'uuid' })
   @ValidateIf(({ albumId }) => albumId !== null)
   @IsUUID()
   albumId: string | null;
 
+  @ApiProperty()
   @IsNumber()
   duration: number;
 }
