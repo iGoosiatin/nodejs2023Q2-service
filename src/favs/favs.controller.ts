@@ -14,7 +14,26 @@ import {
 import { Fav } from './interfaces/favs.interface';
 import { AlbumService } from 'src/album/album.service';
 import { ArtistService } from 'src/artist/artist.service';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
+import {
+  buildAddToFavDescription,
+  buildDeletionDescription,
+  buildInvalidUuidDescription,
+  buildNotFoundDescrition,
+  buildUnprocessableFavDescription,
+  successOperationDescription,
+} from 'src/utils/apiUtils';
 
+@ApiTags('Favorites')
 @Controller('favs')
 export class FavsController {
   constructor(
@@ -25,6 +44,7 @@ export class FavsController {
   ) {}
 
   @Get()
+  @ApiOkResponse({ description: successOperationDescription })
   async findAll() {
     const favs = await this.favsService.findAll();
     return favs;
@@ -32,6 +52,14 @@ export class FavsController {
 
   @Post(FAV_TRACK_ENDPOINT)
   @HttpCode(201)
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
+  @ApiCreatedResponse({ description: buildAddToFavDescription('Track') })
+  @ApiBadRequestResponse({
+    description: buildInvalidUuidDescription(),
+  })
+  @ApiUnprocessableEntityResponse({
+    description: buildUnprocessableFavDescription('track'),
+  })
   async saveFavTrack(@Param() { id }: UuidParams) {
     const track = await this.trackService.findOne(id);
     if (!track) {
@@ -44,6 +72,14 @@ export class FavsController {
 
   @Delete(FAV_TRACK_ENDPOINT)
   @HttpCode(204)
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
+  @ApiNoContentResponse({ description: buildDeletionDescription('Track') })
+  @ApiNotFoundResponse({
+    description: buildNotFoundDescrition('Favorite track'),
+  })
+  @ApiBadRequestResponse({
+    description: buildInvalidUuidDescription(),
+  })
   async removeFavTrack(@Param() { id }: UuidParams): Promise<void> {
     const success = await this.favsService.removeFavTrack(id);
 
@@ -56,6 +92,14 @@ export class FavsController {
 
   @Post(FAV_ALBUM_ENDPOINT)
   @HttpCode(201)
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
+  @ApiCreatedResponse({ description: buildAddToFavDescription('Album') })
+  @ApiBadRequestResponse({
+    description: buildInvalidUuidDescription(),
+  })
+  @ApiUnprocessableEntityResponse({
+    description: buildUnprocessableFavDescription('album'),
+  })
   async saveFavAlbum(@Param() { id }: UuidParams) {
     const album = await this.albumService.findOne(id);
     if (!album) {
@@ -68,6 +112,14 @@ export class FavsController {
 
   @Delete(FAV_ALBUM_ENDPOINT)
   @HttpCode(204)
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
+  @ApiNoContentResponse({ description: buildDeletionDescription('Album') })
+  @ApiNotFoundResponse({
+    description: buildNotFoundDescrition('Favorite album'),
+  })
+  @ApiBadRequestResponse({
+    description: buildInvalidUuidDescription(),
+  })
   async removeFavAlbum(@Param() { id }: UuidParams): Promise<void> {
     const success = await this.favsService.removeFavAlbum(id);
 
@@ -80,6 +132,14 @@ export class FavsController {
 
   @Post(FAV_ARTIST_ENDPOINT)
   @HttpCode(201)
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
+  @ApiCreatedResponse({ description: buildAddToFavDescription('Artist') })
+  @ApiBadRequestResponse({
+    description: buildInvalidUuidDescription(),
+  })
+  @ApiUnprocessableEntityResponse({
+    description: buildUnprocessableFavDescription('artist'),
+  })
   async saveFavArtist(@Param() { id }: UuidParams) {
     const artist = await this.artistService.findOne(id);
     if (!artist) {
@@ -92,6 +152,14 @@ export class FavsController {
 
   @Delete(FAV_ARTIST_ENDPOINT)
   @HttpCode(204)
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
+  @ApiNoContentResponse({ description: buildDeletionDescription('Artist') })
+  @ApiNotFoundResponse({
+    description: buildNotFoundDescrition('Favorite artist'),
+  })
+  @ApiBadRequestResponse({
+    description: buildInvalidUuidDescription(),
+  })
   async removeFavArtist(@Param() { id }: UuidParams): Promise<void> {
     const success = await this.favsService.removeFavArtist(id);
 
