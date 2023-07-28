@@ -1,10 +1,10 @@
 export const buildNotFoundDescrition = (entity: string) =>
   `${entity} not found`;
 
-export const buildInvalidUuidDescription = (id: string) =>
+export const buildInvalidUuidDescription = (id = 'id') =>
   `Bad request. ${id} is not valid UUID`;
 
-export const buildInvalidUuidOrBodyDescription = (id: string) =>
+export const buildInvalidUuidOrBodyDescription = (id = 'id') =>
   `Bad request. ${id} is not valid UUID or missing required properties`;
 
 export const buildDeletionDescription = (entity: string) => `${entity} deleted`;

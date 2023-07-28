@@ -52,10 +52,10 @@ export class UserController {
   }
 
   @Get(':id')
-  @ApiParam({ name: 'userId', type: String })
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
   @ApiOkResponse({ description: successOperationDescription })
   @ApiBadRequestResponse({
-    description: buildInvalidUuidDescription('userId'),
+    description: buildInvalidUuidDescription(),
   })
   @ApiNotFoundResponse({ description: buildNotFoundDescrition('User') })
   async findUser(@Param() { id }: UuidParams): Promise<UserEntity> {
@@ -81,10 +81,10 @@ export class UserController {
   }
 
   @Put(':id')
-  @ApiParam({ name: 'userId', type: String })
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
   @ApiOkResponse({ description: successOperationDescription })
   @ApiBadRequestResponse({
-    description: buildInvalidUuidOrBodyDescription('userId'),
+    description: buildInvalidUuidOrBodyDescription(),
   })
   @ApiNotFoundResponse({ description: buildNotFoundDescrition('User') })
   async updateUserPassword(
@@ -110,11 +110,11 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiParam({ name: 'userId', type: String })
+  @ApiParam({ name: 'id', type: String, format: 'uuid' })
   @ApiNoContentResponse({ description: buildDeletionDescription('User') })
   @ApiNotFoundResponse({ description: buildNotFoundDescrition('User') })
   @ApiBadRequestResponse({
-    description: buildInvalidUuidDescription('userId'),
+    description: buildInvalidUuidDescription(),
   })
   @HttpCode(204)
   async removeUser(@Param() { id }: UuidParams): Promise<void> {
