@@ -9,7 +9,7 @@ import {
   buildDeletionDescription,
   buildInvalidUuidDescription,
   buildNotFoundDescrition,
-} from '../../../utils/apiUtils';
+} from '../../utils/api.utils';
 
 export default function ApiDeleteFav(entity: string, alias?: string) {
   return applyDecorators(
