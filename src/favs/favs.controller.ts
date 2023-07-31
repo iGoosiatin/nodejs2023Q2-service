@@ -5,18 +5,17 @@ import {
   FAV_ARTIST_ENDPOINT,
   FAV_TRACK_ENDPOINT,
 } from './constants/favs.contants';
-import { UuidParams } from 'src/common/dto/uuid-param.dto';
-import { TrackService } from 'src/track/track.service';
+import { UuidParams } from '../common/dto/uuid-param.dto';
+import { TrackService } from '../track/track.service';
 import {
   UnprocessableFavException,
   FavNotFoundException,
 } from './errors/favs.error';
 import { Fav } from './interfaces/favs.interface';
-import { AlbumService } from 'src/album/album.service';
-import { ArtistService } from 'src/artist/artist.service';
+import { AlbumService } from '../album/album.service';
+import { ArtistService } from '../artist/artist.service';
 import { ApiTags } from '@nestjs/swagger';
-
-import { ApiDeleteFav, ApiGetAll, ApiAddFav } from 'src/common/decorators/api';
+import { ApiDeleteFav, ApiGetAll, ApiAddFav } from '../common/decorators/api';
 
 @ApiTags('Favorites')
 @Controller('favs')

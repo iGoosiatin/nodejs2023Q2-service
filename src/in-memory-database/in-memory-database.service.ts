@@ -5,9 +5,9 @@ import {
   User,
 } from '../common/interfaces/user.interface';
 import { v4 as uuid } from 'uuid';
-import { Artist, NewArtist } from 'src/common/interfaces/artist.interface';
-import { Album, NewAlbum } from 'src/common/interfaces/album.interface';
-import { Track, NewTrack } from 'src/common/interfaces/track.interface';
+import { Artist, NewArtist } from '../common/interfaces/artist.interface';
+import { Album, NewAlbum } from '../common/interfaces/album.interface';
+import { Track, NewTrack } from '../common/interfaces/track.interface';
 
 @Injectable()
 export class InMemoryDatabaseService {

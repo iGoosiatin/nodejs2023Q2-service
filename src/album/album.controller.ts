@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { AlbumDto } from './dto/album.dto';
-import { UuidParams } from 'src/common/dto/uuid-param.dto';
+import { UuidParams } from '../common/dto/uuid-param.dto';
 import { AlbumNotFoundException } from './errors/album.errors';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -20,7 +20,7 @@ import {
   ApiGetAll,
   ApiGetById,
   ApiUpdateById,
-} from 'src/common/decorators/api';
+} from '../common/decorators/api';
 
 @ApiTags('Album')
 @Controller('album')

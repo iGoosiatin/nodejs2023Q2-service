@@ -9,7 +9,7 @@ import {
   successOperationDescription,
   buildInvalidUuidDescription,
   buildNotFoundDescrition,
-} from 'src/utils/apiUtils';
+} from '../../../utils/apiUtils';
 
 export default function ApiGetById(entity: string) {
   return applyDecorators(

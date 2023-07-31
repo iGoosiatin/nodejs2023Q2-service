@@ -9,7 +9,7 @@ import {
   buildAddToFavDescription,
   buildInvalidUuidDescription,
   buildUnprocessableFavDescription,
-} from 'src/utils/apiUtils';
+} from '../../../utils/apiUtils';
 
 export default function ApiAddFav(entity: string) {
   return applyDecorators(

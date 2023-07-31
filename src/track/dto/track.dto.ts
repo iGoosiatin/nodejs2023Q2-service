@@ -6,7 +6,7 @@ import {
   IsUUID,
   ValidateIf,
 } from 'class-validator';
-import { NewTrack } from 'src/common/interfaces/track.interface';
+import { NewTrack } from '../../common/interfaces/track.interface';
 
 export class TrackDto implements NewTrack {
   @ApiProperty()

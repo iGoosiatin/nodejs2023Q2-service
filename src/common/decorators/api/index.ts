@@ -4,7 +4,7 @@ import ApiGetById from './apiGetById.decorator';
 import ApiDeleteById from './apiDeleteById.decorator';
 import ApiUpdateById from './apiUpdateById.decorator';
 import ApiAddFav from './apiAddFav.decorator';
-import ApiDeleteFav from './apiDeleteFav.decorator copy';
+import ApiDeleteFav from './apiDeleteFav.decorator';
 
 export {
   ApiCreate,

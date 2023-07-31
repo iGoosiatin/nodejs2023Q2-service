@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { TrackDto } from './dto/track.dto';
-import { UuidParams } from 'src/common/dto/uuid-param.dto';
+import { UuidParams } from '../common/dto/uuid-param.dto';
 import { TrackNotFoundException } from './errors/track.errors';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -19,7 +19,7 @@ import {
   ApiGetAll,
   ApiGetById,
   ApiUpdateById,
-} from 'src/common/decorators/api';
+} from '../common/decorators/api';
 
 @ApiTags('Track')
 @Controller('track')

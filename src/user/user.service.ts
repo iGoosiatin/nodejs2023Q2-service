@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { InMemoryDatabaseService } from 'src/in-memory-database/in-memory-database.service';
+import { InMemoryDatabaseService } from '../in-memory-database/in-memory-database.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from 'src/common/interfaces/user.interface';
+import { User } from '../common/interfaces/user.interface';
 
 @Injectable()
 export class UserService {

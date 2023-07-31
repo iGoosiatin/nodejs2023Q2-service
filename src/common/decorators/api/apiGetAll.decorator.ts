@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { successOperationDescription } from 'src/utils/apiUtils';
+import { successOperationDescription } from '../../../utils/apiUtils';
 
 export default function ApiGetAll() {
   return applyDecorators(

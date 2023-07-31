@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { ArtistDto } from './dto/artist.dto';
-import { UuidParams } from 'src/common/dto/uuid-param.dto';
+import { UuidParams } from '../common/dto/uuid-param.dto';
 import { ArtistNotFoundException } from './errors/artist.errors';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -19,7 +19,7 @@ import {
   ApiGetAll,
   ApiGetById,
   ApiUpdateById,
-} from 'src/common/decorators/api';
+} from '../common/decorators/api';
 
 @ApiTags('Artist')
 @Controller('artist')

@@ -3,7 +3,7 @@ import { ApiBadRequestResponse, ApiCreatedResponse } from '@nestjs/swagger';
 import {
   buildCreationDescription,
   missingPropertiesDescription,
-} from 'src/utils/apiUtils';
+} from '../../../utils/apiUtils';
 
 export default function ApiCreate(entity: string) {
   return applyDecorators(

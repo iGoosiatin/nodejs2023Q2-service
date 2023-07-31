@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TrackDto } from './dto/track.dto';
-import { InMemoryDatabaseService } from 'src/in-memory-database/in-memory-database.service';
-import { Track } from 'src/common/interfaces/track.interface';
+import { InMemoryDatabaseService } from '../in-memory-database/in-memory-database.service';
+import { Track } from '../common/interfaces/track.interface';
 
 @Injectable()
 export class TrackService {

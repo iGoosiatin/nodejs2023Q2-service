@@ -6,7 +6,7 @@ import {
   IsUUID,
   ValidateIf,
 } from 'class-validator';
-import { NewAlbum } from 'src/common/interfaces/album.interface';
+import { NewAlbum } from '../../common/interfaces/album.interface';
 
 export class AlbumDto implements NewAlbum {
   @ApiProperty()
