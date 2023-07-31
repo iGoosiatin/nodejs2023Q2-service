@@ -19,24 +19,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UuidParams } from '../common/dto/uuid-param.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { UserEntity } from './entities/user.entity';
+import { ApiTags } from '@nestjs/swagger';
 import {
-  ApiBadRequestResponse,
-  ApiCreatedResponse,
-  ApiNoContentResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
-import {
-  buildCreationDescription,
-  buildDeletionDescription,
-  buildInvalidUuidDescription,
-  buildInvalidUuidOrBodyDescription,
-  buildNotFoundDescrition,
-  missingPropertiesDescription,
-  successOperationDescription,
-} from 'src/utils/apiUtils';
+  ApiCreate,
+  ApiDeleteById,
+  ApiGetAll,
+  ApiGetById,
+  ApiUpdateById,
+} from '../common/decorators/api';
 
 @ApiTags('User')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -45,19 +35,14 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @ApiOkResponse({ description: successOperationDescription })
+  @ApiGetAll()
   async findUsers(): Promise<UserEntity[]> {
     const users = await this.userService.findAll();
     return users.map((user) => new UserEntity(user));
   }
 
   @Get(':id')
-  @ApiParam({ name: 'id', type: String, format: 'uuid' })
-  @ApiOkResponse({ description: successOperationDescription })
-  @ApiBadRequestResponse({
-    description: buildInvalidUuidDescription(),
-  })
-  @ApiNotFoundResponse({ description: buildNotFoundDescrition('User') })
+  @ApiGetById('User')
   async findUser(@Param() { id }: UuidParams): Promise<UserEntity> {
     const user = await this.userService.findOne(id);
 
@@ -69,10 +54,7 @@ export class UserController {
   }
 
   @Post()
-  @ApiCreatedResponse({ description: buildCreationDescription('User') })
-  @ApiBadRequestResponse({
-    description: missingPropertiesDescription,
-  })
+  @ApiCreate('User')
   @HttpCode(201)
   async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     const user = await this.userService.create(createUserDto);
@@ -81,12 +63,7 @@ export class UserController {
   }
 
   @Put(':id')
-  @ApiParam({ name: 'id', type: String, format: 'uuid' })
-  @ApiOkResponse({ description: successOperationDescription })
-  @ApiBadRequestResponse({
-    description: buildInvalidUuidOrBodyDescription(),
-  })
-  @ApiNotFoundResponse({ description: buildNotFoundDescrition('User') })
+  @ApiUpdateById('User')
   async updateUserPassword(
     @Param() { id }: UuidParams,
     @Body() { oldPassword, newPassword }: UpdateUserPasswordDto,
@@ -110,12 +87,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiParam({ name: 'id', type: String, format: 'uuid' })
-  @ApiNoContentResponse({ description: buildDeletionDescription('User') })
-  @ApiNotFoundResponse({ description: buildNotFoundDescrition('User') })
-  @ApiBadRequestResponse({
-    description: buildInvalidUuidDescription(),
-  })
+  @ApiDeleteById('User')
   @HttpCode(204)
   async removeUser(@Param() { id }: UuidParams): Promise<void> {
     const success = await this.userService.remove(id);

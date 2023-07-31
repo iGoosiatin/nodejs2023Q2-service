@@ -12,25 +12,14 @@ import { ArtistService } from './artist.service';
 import { ArtistDto } from './dto/artist.dto';
 import { UuidParams } from 'src/common/dto/uuid-param.dto';
 import { ArtistNotFoundException } from './errors/artist.errors';
+import { ApiTags } from '@nestjs/swagger';
 import {
-  ApiBadRequestResponse,
-  ApiBody,
-  ApiCreatedResponse,
-  ApiNoContentResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
-import {
-  successOperationDescription,
-  buildInvalidUuidDescription,
-  buildNotFoundDescrition,
-  buildCreationDescription,
-  missingPropertiesDescription,
-  buildInvalidUuidOrBodyDescription,
-  buildDeletionDescription,
-} from 'src/utils/apiUtils';
+  ApiCreate,
+  ApiDeleteById,
+  ApiGetAll,
+  ApiGetById,
+  ApiUpdateById,
+} from 'src/common/decorators/api';
 
 @ApiTags('Artist')
 @Controller('artist')
@@ -38,18 +27,13 @@ export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Get()
-  @ApiOkResponse({ description: successOperationDescription })
+  @ApiGetAll()
   async findAll() {
     return this.artistService.findAll();
   }
 
   @Get(':id')
-  @ApiParam({ name: 'id', type: String, format: 'uuid' })
-  @ApiOkResponse({ description: successOperationDescription })
-  @ApiBadRequestResponse({
-    description: buildInvalidUuidDescription(),
-  })
-  @ApiNotFoundResponse({ description: buildNotFoundDescrition('Artist') })
+  @ApiGetById('Artist')
   async findOne(@Param() { id }: UuidParams) {
     const artist = await this.artistService.findOne(id);
     if (!artist) {
@@ -61,24 +45,14 @@ export class ArtistController {
 
   @Post()
   @HttpCode(201)
-  @ApiBody({ type: ArtistDto })
-  @ApiCreatedResponse({ description: buildCreationDescription('Artist') })
-  @ApiBadRequestResponse({
-    description: missingPropertiesDescription,
-  })
+  @ApiCreate('Artist')
   async create(@Body() artistDto: ArtistDto) {
     const artist = await this.artistService.create(artistDto);
     return artist;
   }
 
   @Put(':id')
-  @ApiBody({ type: ArtistDto })
-  @ApiParam({ name: 'id', type: String, format: 'uuid' })
-  @ApiOkResponse({ description: successOperationDescription })
-  @ApiBadRequestResponse({
-    description: buildInvalidUuidOrBodyDescription(),
-  })
-  @ApiNotFoundResponse({ description: buildNotFoundDescrition('Artist') })
+  @ApiUpdateById('Artist')
   async update(@Param() { id }: UuidParams, @Body() artistDto: ArtistDto) {
     const artist = await this.artistService.findOne(id);
     if (!artist) {
@@ -91,12 +65,7 @@ export class ArtistController {
 
   @Delete(':id')
   @HttpCode(204)
-  @ApiParam({ name: 'id', type: String, format: 'uuid' })
-  @ApiNoContentResponse({ description: buildDeletionDescription('Artist') })
-  @ApiNotFoundResponse({ description: buildNotFoundDescrition('Artist') })
-  @ApiBadRequestResponse({
-    description: buildInvalidUuidDescription(),
-  })
+  @ApiDeleteById('Artist')
   async remove(@Param() { id }: UuidParams) {
     const success = await this.artistService.remove(id);
 
