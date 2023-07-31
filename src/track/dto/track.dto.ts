@@ -1,12 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsString,
-  IsNotEmpty,
-  IsNumber,
-  IsUUID,
-  ValidateIf,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 import { NewTrack } from '../../common/interfaces/track.interface';
+import { IsNullable } from '../../common/decorators/validation';
 
 export class TrackDto implements NewTrack {
   @ApiProperty()
@@ -15,13 +10,13 @@ export class TrackDto implements NewTrack {
   name: string;
 
   @ApiProperty({ nullable: true, type: String, format: 'uuid' })
-  @ValidateIf(({ artistId }) => artistId !== null)
   @IsUUID()
+  @IsNullable()
   artistId: string | null;
 
   @ApiProperty({ nullable: true, type: String, format: 'uuid' })
-  @ValidateIf(({ albumId }) => albumId !== null)
   @IsUUID()
+  @IsNullable()
   albumId: string | null;
 
   @ApiProperty()
