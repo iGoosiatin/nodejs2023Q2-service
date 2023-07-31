@@ -1,15 +1,14 @@
----
 openapi: 3.0.0
 paths:
-  "/user":
+  /user:
     get:
       operationId: UserController_findUsers
       parameters: []
       responses:
         '200':
           description: Successful operation
-      tags:
-      - User
+      tags: &ref_0
+        - User
     post:
       operationId: UserController_createUser
       parameters: []
@@ -18,24 +17,23 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CreateUserDto"
+              $ref: '#/components/schemas/CreateUserDto'
       responses:
         '201':
           description: User created
         '400':
           description: Bad request. Missing required properties in the body
-      tags:
-      - User
-  "/user/{id}":
+      tags: *ref_0
+  /user/{id}:
     get:
       operationId: UserController_findUser
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -43,42 +41,41 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: User not found
-      tags:
-      - User
+      tags: *ref_0
     put:
       operationId: UserController_updateUserPassword
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/UpdateUserPasswordDto"
+              $ref: '#/components/schemas/UpdateUserPasswordDto'
       responses:
         '200':
           description: Successful operation
         '400':
-          description: Bad request. id is not valid UUID or missing required properties
-            in the body
+          description: >-
+            Bad request. id is not valid UUID or missing required properties in
+            the body
         '404':
           description: User not found
-      tags:
-      - User
+      tags: *ref_0
     delete:
       operationId: UserController_removeUser
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '204':
           description: User deleted
@@ -86,17 +83,16 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: User not found
-      tags:
-      - User
-  "/artist":
+      tags: *ref_0
+  /artist:
     get:
       operationId: ArtistController_findAll
       parameters: []
       responses:
         '200':
           description: Successful operation
-      tags:
-      - Artist
+      tags: &ref_1
+        - Artist
     post:
       operationId: ArtistController_create
       parameters: []
@@ -105,24 +101,23 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/ArtistDto"
+              $ref: '#/components/schemas/ArtistDto'
       responses:
         '201':
           description: Artist created
         '400':
           description: Bad request. Missing required properties in the body
-      tags:
-      - Artist
-  "/artist/{id}":
+      tags: *ref_1
+  /artist/{id}:
     get:
       operationId: ArtistController_findOne
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -130,42 +125,41 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: Artist not found
-      tags:
-      - Artist
+      tags: *ref_1
     put:
       operationId: ArtistController_update
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/ArtistDto"
+              $ref: '#/components/schemas/ArtistDto'
       responses:
         '200':
           description: Successful operation
         '400':
-          description: Bad request. id is not valid UUID or missing required properties
-            in the body
+          description: >-
+            Bad request. id is not valid UUID or missing required properties in
+            the body
         '404':
           description: Artist not found
-      tags:
-      - Artist
+      tags: *ref_1
     delete:
       operationId: ArtistController_remove
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '204':
           description: Artist deleted
@@ -173,17 +167,16 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: Artist not found
-      tags:
-      - Artist
-  "/album":
+      tags: *ref_1
+  /album:
     get:
       operationId: AlbumController_findAll
       parameters: []
       responses:
         '200':
           description: Successful operation
-      tags:
-      - Album
+      tags: &ref_2
+        - Album
     post:
       operationId: AlbumController_create
       parameters: []
@@ -192,24 +185,23 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/AlbumDto"
+              $ref: '#/components/schemas/AlbumDto'
       responses:
         '201':
           description: Album created
         '400':
           description: Bad request. Missing required properties in the body
-      tags:
-      - Album
-  "/album/{id}":
+      tags: *ref_2
+  /album/{id}:
     get:
       operationId: AlbumController_findOne
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -217,42 +209,41 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: Album not found
-      tags:
-      - Album
+      tags: *ref_2
     put:
       operationId: AlbumController_update
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/AlbumDto"
+              $ref: '#/components/schemas/AlbumDto'
       responses:
         '200':
           description: Successful operation
         '400':
-          description: Bad request. id is not valid UUID or missing required properties
-            in the body
+          description: >-
+            Bad request. id is not valid UUID or missing required properties in
+            the body
         '404':
           description: Album not found
-      tags:
-      - Album
+      tags: *ref_2
     delete:
       operationId: AlbumController_remove
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '204':
           description: Album deleted
@@ -260,17 +251,16 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: Album not found
-      tags:
-      - Album
-  "/track":
+      tags: *ref_2
+  /track:
     get:
       operationId: TrackController_findAll
       parameters: []
       responses:
         '200':
           description: Successful operation
-      tags:
-      - Track
+      tags: &ref_3
+        - Track
     post:
       operationId: TrackController_create
       parameters: []
@@ -279,24 +269,23 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/TrackDto"
+              $ref: '#/components/schemas/TrackDto'
       responses:
         '201':
           description: Track created
         '400':
           description: Bad request. Missing required properties in the body
-      tags:
-      - Track
-  "/track/{id}":
+      tags: *ref_3
+  /track/{id}:
     get:
       operationId: TrackController_findOne
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -304,42 +293,41 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: Track not found
-      tags:
-      - Track
+      tags: *ref_3
     put:
       operationId: TrackController_update
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/TrackDto"
+              $ref: '#/components/schemas/TrackDto'
       responses:
         '200':
           description: Successful operation
         '400':
-          description: Bad request. id is not valid UUID or missing required properties
-            in the body
+          description: >-
+            Bad request. id is not valid UUID or missing required properties in
+            the body
         '404':
           description: Track not found
-      tags:
-      - Track
+      tags: *ref_3
     delete:
       operationId: TrackController_remove
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '204':
           description: Track deleted
@@ -347,27 +335,26 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: Track not found
-      tags:
-      - Track
-  "/favs":
+      tags: *ref_3
+  /favs:
     get:
       operationId: FavsController_findAll
       parameters: []
       responses:
         '200':
           description: Successful operation
-      tags:
-      - Favorites
-  "/favs/track/{id}":
+      tags: &ref_4
+        - Favorites
+  /favs/track/{id}:
     post:
       operationId: FavsController_saveFavTrack
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '201':
           description: Track added to favorites
@@ -375,17 +362,16 @@ paths:
           description: Bad request. id is not valid UUID
         '422':
           description: Cannot add non-existing track favorites
-      tags:
-      - Favorites
+      tags: *ref_4
     delete:
       operationId: FavsController_removeFavTrack
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '204':
           description: Track deleted
@@ -393,18 +379,17 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: Favorite track not found
-      tags:
-      - Favorites
-  "/favs/album/{id}":
+      tags: *ref_4
+  /favs/album/{id}:
     post:
       operationId: FavsController_saveFavAlbum
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '201':
           description: Album added to favorites
@@ -412,17 +397,16 @@ paths:
           description: Bad request. id is not valid UUID
         '422':
           description: Cannot add non-existing album favorites
-      tags:
-      - Favorites
+      tags: *ref_4
     delete:
       operationId: FavsController_removeFavAlbum
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '204':
           description: Album deleted
@@ -430,18 +414,17 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: Favorite album not found
-      tags:
-      - Favorites
-  "/favs/artist/{id}":
+      tags: *ref_4
+  /favs/artist/{id}:
     post:
       operationId: FavsController_saveFavArtist
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '201':
           description: Artist added to favorites
@@ -449,17 +432,16 @@ paths:
           description: Bad request. id is not valid UUID
         '422':
           description: Cannot add non-existing artist favorites
-      tags:
-      - Favorites
+      tags: *ref_4
     delete:
       operationId: FavsController_removeFavArtist
       parameters:
-      - name: id
-        required: true
-        in: path
-        schema:
-          format: uuid
-          type: string
+        - name: id
+          required: true
+          in: path
+          schema:
+            format: uuid
+            type: string
       responses:
         '204':
           description: Artist deleted
@@ -467,15 +449,15 @@ paths:
           description: Bad request. id is not valid UUID
         '404':
           description: Favorite artist not found
-      tags:
-      - Favorites
+      tags: *ref_4
 info:
   title: Home Library Service
   description: Home music library service
   version: '1.0'
   contact: {}
 tags: []
-servers: []
+servers:
+  - url: http://localhost:4000
 components:
   schemas:
     CreateUserDto:
@@ -486,8 +468,8 @@ components:
         password:
           type: string
       required:
-      - login
-      - password
+        - login
+        - password
     UpdateUserPasswordDto:
       type: object
       properties:
@@ -496,8 +478,8 @@ components:
         newPassword:
           type: string
       required:
-      - oldPassword
-      - newPassword
+        - oldPassword
+        - newPassword
     ArtistDto:
       type: object
       properties:
@@ -506,8 +488,8 @@ components:
         grammy:
           type: boolean
       required:
-      - name
-      - grammy
+        - name
+        - grammy
     AlbumDto:
       type: object
       properties:
@@ -520,9 +502,9 @@ components:
           nullable: true
           format: uuid
       required:
-      - name
-      - year
-      - artistId
+        - name
+        - year
+        - artistId
     TrackDto:
       type: object
       properties:
@@ -539,7 +521,7 @@ components:
         duration:
           type: number
       required:
-      - name
-      - artistId
-      - albumId
-      - duration
+        - name
+        - artistId
+        - albumId
+        - duration

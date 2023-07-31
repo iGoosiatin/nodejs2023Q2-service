@@ -16,12 +16,15 @@ async function bootstrap() {
     .setTitle('Home Library Service')
     .setDescription('Home music library service')
     .setVersion('1.0')
+    .addServer('http://localhost:4000')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, document);
 
   const configService = app.get(ConfigService);
   const port = configService.get('PORT', 4000);
+
+  app.enableCors();
 
   await app.listen(port);
 }
