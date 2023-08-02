@@ -78,10 +78,7 @@ export class UserController {
       throw new WrongPasswordException();
     }
 
-    const updatedUser = await this.userService.changePassword(
-      user,
-      newPassword,
-    );
+    const updatedUser = await this.userService.changePassword(id, newPassword);
 
     return new UserEntity(updatedUser);
   }

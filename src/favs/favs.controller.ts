@@ -4,7 +4,7 @@ import {
   FAV_ALBUM_ENDPOINT,
   FAV_ARTIST_ENDPOINT,
   FAV_TRACK_ENDPOINT,
-} from './constants/favs.contants';
+} from './constants/favs.constants';
 import { UuidParams } from '../common/dto/uuid-param.dto';
 import { TrackService } from '../track/track.service';
 import {
