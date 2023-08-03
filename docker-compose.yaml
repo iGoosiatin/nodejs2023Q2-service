@@ -10,5 +10,20 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - ${DB_PORT}:5432
+    networks:
+      - home-library-network
     volumes:
       - ./database/db_data:/var/lib/postgresql/data
+  app:
+    build: .
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - home-library-network
+
+networks:
+  home-library-network:
