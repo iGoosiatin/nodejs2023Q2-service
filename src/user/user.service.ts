@@ -32,13 +32,17 @@ export class UserService {
   }
 
   async changePassword(id: string, password: string) {
-    const updatedUser = await this.dbService.user.update({
-      where: { id },
-      data: {
-        password,
-        version: { increment: 1 },
-      },
-    });
-    return updatedUser;
+    try {
+      const updatedUser = await this.dbService.user.update({
+        where: { id },
+        data: {
+          password,
+          version: { increment: 1 },
+        },
+      });
+      return updatedUser;
+    } catch {
+      return null;
+    }
   }
 }

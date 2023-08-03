@@ -80,6 +80,10 @@ export class UserController {
 
     const updatedUser = await this.userService.changePassword(id, newPassword);
 
+    if (!updatedUser) {
+      throw new UserNotFoundException();
+    }
+
     return new UserEntity(updatedUser);
   }
 
