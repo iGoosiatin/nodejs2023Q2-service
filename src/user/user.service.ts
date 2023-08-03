@@ -24,8 +24,8 @@ export class UserService {
 
   async remove(id: string) {
     try {
-      const user = await this.dbService.user.delete({ where: { id } });
-      return !!user;
+      await this.dbService.user.delete({ where: { id } });
+      return true;
     } catch {
       return false;
     }

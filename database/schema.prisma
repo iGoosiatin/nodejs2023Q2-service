@@ -15,3 +15,32 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
 }
+
+model Artist {
+  id      String    @id @default(uuid())
+  name    String
+  grammy  Boolean
+
+  albums  Album[]
+  tracks  Track[]
+}
+
+model Album {
+  id        String   @id @default(uuid())
+  name      String
+  year      Int
+  artistId  String?
+  artist    Artist?  @relation(fields: [artistId], references: [id], onDelete: SetNull)
+
+  tracks  Track[]
+}
+
+model Track {
+  id        String   @id @default(uuid())
+  name      String
+  duration  Int
+  artistId  String?
+  artist    Artist?  @relation(fields: [artistId], references: [id], onDelete: SetNull)
+  albumId   String?
+  album     Album?   @relation(fields: [albumId], references: [id], onDelete: SetNull)
+}

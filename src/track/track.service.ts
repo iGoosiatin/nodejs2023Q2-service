@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { TrackDto } from './dto/track.dto';
-import { InMemoryDatabaseService } from '../in-memory-database/in-memory-database.service';
-import { Track } from '../common/interfaces/track.interface';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class TrackService {
-  constructor(private dbService: InMemoryDatabaseService) {}
+  constructor(private dbService: DatabaseService) {}
 
   async findAll() {
     const tracks = await this.dbService.track.findMany();
@@ -13,25 +12,33 @@ export class TrackService {
   }
 
   async findOne(id: string) {
-    const track = await this.dbService.track.findUnique(id);
+    const track = await this.dbService.track.findUnique({ where: { id } });
     return track;
   }
 
-  async create(trackDto: TrackDto) {
-    const track = await this.dbService.track.create(trackDto);
+  async create(data: TrackDto) {
+    const track = await this.dbService.track.create({ data });
     return track;
   }
 
-  async update(track: Track, trackDto: TrackDto) {
-    const updatedTrack = await this.dbService.track.update({
-      ...track,
-      ...trackDto,
-    });
-    return updatedTrack;
+  async update(id: string, data: TrackDto) {
+    try {
+      const updatedTrack = await this.dbService.track.update({
+        where: { id },
+        data,
+      });
+      return updatedTrack;
+    } catch {
+      return null;
+    }
   }
 
   async remove(id: string) {
-    const track = await this.dbService.track.delete(id);
-    return !!track;
+    try {
+      await this.dbService.track.delete({ where: { id } });
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

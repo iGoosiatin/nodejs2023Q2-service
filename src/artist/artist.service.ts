@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ArtistDto } from './dto/artist.dto';
-import { InMemoryDatabaseService } from '../in-memory-database/in-memory-database.service';
-import { Artist } from '../common/interfaces/artist.interface';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class ArtistService {
-  constructor(private dbService: InMemoryDatabaseService) {}
+  constructor(private dbService: DatabaseService) {}
 
   async findAll() {
     const artists = await this.dbService.artist.findMany();
@@ -13,25 +12,33 @@ export class ArtistService {
   }
 
   async findOne(id: string) {
-    const artist = await this.dbService.artist.findUnique(id);
+    const artist = await this.dbService.artist.findUnique({ where: { id } });
     return artist;
   }
 
-  async create(artistDto: ArtistDto) {
-    const artist = await this.dbService.artist.create(artistDto);
+  async create(data: ArtistDto) {
+    const artist = await this.dbService.artist.create({ data });
     return artist;
   }
 
-  async update(artist: Artist, artistDto: ArtistDto) {
-    const updatedArtist = await this.dbService.artist.update({
-      ...artist,
-      ...artistDto,
-    });
-    return updatedArtist;
+  async update(id: string, data: ArtistDto) {
+    try {
+      const updatedArtist = await this.dbService.artist.update({
+        where: { id },
+        data,
+      });
+      return updatedArtist;
+    } catch {
+      return null;
+    }
   }
 
   async remove(id: string) {
-    const artist = await this.dbService.artist.delete(id);
-    return !!artist;
+    try {
+      await this.dbService.artist.delete({ where: { id } });
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

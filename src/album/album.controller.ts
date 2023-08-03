@@ -55,12 +55,12 @@ export class AlbumController {
   @Put(':id')
   @ApiUpdateById('Album')
   async update(@Param() { id }: UuidParams, @Body() albumDto: AlbumDto) {
-    const album = await this.albumService.findOne(id);
-    if (!album) {
+    const updatedAlbum = await this.albumService.update(id, albumDto);
+
+    if (!updatedAlbum) {
       throw new AlbumNotFoundException();
     }
 
-    const updatedAlbum = await this.albumService.update(album, albumDto);
     return updatedAlbum;
   }
 
