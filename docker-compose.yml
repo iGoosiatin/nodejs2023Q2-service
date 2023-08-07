@@ -15,11 +15,19 @@ services:
     volumes:
       - ./database/db_data:/var/lib/postgresql/data
   app:
+    image: goosedev/home-library-service
     build: .
+    restart: always
+    volumes:
+      - ./src:/app/src
+      - ./database:/app/database
     env_file:
       - .env
     depends_on:
       - db
+    links:
+      - db:database
+      - db:postgres
     ports:
       - ${PORT}:${PORT}
     networks:
