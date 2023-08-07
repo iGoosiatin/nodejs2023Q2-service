@@ -5,13 +5,13 @@
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js v18.16.0 - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
-## Downloading
+### Downloading
 
 ```
 git clone {repository URL}
 ```
 
-## Installing NPM modules
+### Installing NPM modules
 
 ```
 npm install
@@ -25,13 +25,13 @@ npm install
 
 NOTE: on DB schema change containers needs to be restarted, on changes in packages docker image needs to be rebuilt
 
-## OpenAPI
+### OpenAPI
 
 After starting the app on port (4000 as default) you can open in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 
 Alternatively, you can open https://editor.swagger.io/ and upload `doc/apiUpdated.yaml`. Make sure you manually update port if your server running on non-default one.
 
-## Environment
+### Environment
 
 Please see `.env.example` to setup your local environment
 ```
@@ -73,6 +73,19 @@ To run only specific test suite with authorization
 ```
 npm run test:auth -- <path to suite>
 ```
+
+## Misc
+### Docker container vulnerability scan
+Install Snyk: `npm install -g snyk`
+
+Authenticate: `snyk auth`
+
+To scan docker image vulnerability execute:
+```
+npm run docker:scan
+```
+
+See more about Snyk: https://snyk.io/
 
 ### Auto-fix and format
 
