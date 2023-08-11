@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15.3-alpine3.18
+    restart: always
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:5432
+    networks:
+      - home-library-network
+    volumes:
+      - ./database/db_data:/var/lib/postgresql/data
+  app:
+    image: goosedev/home-library-service
+    build: .
+    restart: always
+    volumes:
+      - ./src:/app/src
+      - ./database:/app/database
+    env_file:
+      - .env
+    depends_on:
+      - db
+    links:
+      - db:database
+      - db:postgres
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - home-library-network
+
+networks:
+  home-library-network:

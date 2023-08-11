@@ -54,12 +54,12 @@ export class ArtistController {
   @Put(':id')
   @ApiUpdateById('Artist')
   async update(@Param() { id }: UuidParams, @Body() artistDto: ArtistDto) {
-    const artist = await this.artistService.findOne(id);
-    if (!artist) {
+    const updatedArtist = await this.artistService.update(id, artistDto);
+
+    if (!updatedArtist) {
       throw new ArtistNotFoundException();
     }
 
-    const updatedArtist = await this.artistService.update(artist, artistDto);
     return updatedArtist;
   }
 

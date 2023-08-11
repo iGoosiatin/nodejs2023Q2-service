@@ -54,12 +54,12 @@ export class TrackController {
   @Put(':id')
   @ApiUpdateById('Track')
   async update(@Param() { id }: UuidParams, @Body() trackDto: TrackDto) {
-    const track = await this.trackService.findOne(id);
-    if (!track) {
+    const updatedTrack = await this.trackService.update(id, trackDto);
+
+    if (!updatedTrack) {
       throw new TrackNotFoundException();
     }
 
-    const updatedTrack = await this.trackService.update(track, trackDto);
     return updatedTrack;
   }
 

@@ -3,15 +3,15 @@
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+- Node.js v18.16.0 - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
-## Downloading
+### Downloading
 
 ```
 git clone {repository URL}
 ```
 
-## Installing NPM modules
+### Installing NPM modules
 
 ```
 npm install
@@ -19,16 +19,32 @@ npm install
 
 ## Running application
 
-```
-npm start
-```
+- `npm start` to start application
+- `npm start:dev` to start application in development/watch mode
+- `docker compose up` to start application in development/watch mode in docker container
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+NOTE: on DB schema change containers needs to be restarted, on changes in packages docker image needs to be rebuilt
+
+### OpenAPI
+
+After starting the app on port (4000 as default) you can open in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 
 Alternatively, you can open https://editor.swagger.io/ and upload `doc/apiUpdated.yaml`. Make sure you manually update port if your server running on non-default one.
 
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+### Environment
+
+Please see `.env.example` to setup your local environment
+```
+PORT=4000
+
+DB_NAME=home_library
+DB_USER=home_library_service
+DB_PASSWORD=your_strong_db_password
+DB_HOST=database
+DB_PORT=5432
+DB_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?schema=public
+```
+NOTE: For usage with docker compose provided containerized database, DB_HOST should be configured to be service name `db` it's aliases: `database` or `postgres`
 
 ## Testing
 
@@ -57,6 +73,19 @@ To run only specific test suite with authorization
 ```
 npm run test:auth -- <path to suite>
 ```
+
+## Misc
+### Docker container vulnerability scan
+Install Snyk: `npm install -g snyk`
+
+Authenticate: `snyk auth`
+
+To scan docker image vulnerability execute:
+```
+npm run docker:scan
+```
+
+See more about Snyk: https://snyk.io/
 
 ### Auto-fix and format
 

@@ -20,6 +20,7 @@ lerna-debug.log*
 
 # IDEs and editors
 /.idea
+.vscode
 .project
 .classpath
 .c9/
@@ -37,3 +38,6 @@ lerna-debug.log*
 # Env
 .env*
 !.env.example
+
+# Database
+/database/db_data
