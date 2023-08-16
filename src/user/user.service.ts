@@ -16,6 +16,11 @@ export class UserService {
     return user;
   }
 
+  async findFirstByLogin(login: string) {
+    const user = await this.dbService.user.findFirst({ where: { login } });
+    return user;
+  }
+
   async create(data: CreateUserDto) {
     const user = await this.dbService.user.create({ data });
 
