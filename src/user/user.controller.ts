@@ -15,10 +15,10 @@ import {
   UserNotFoundException,
   WrongPasswordException,
 } from './errors/user.errors';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from '../common/dto/create-user.dto';
 import { UuidParams } from '../common/dto/uuid-param.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from '../common/entities/user.entity';
 import { ApiTags } from '@nestjs/swagger';
 import {
   ApiCreate,
