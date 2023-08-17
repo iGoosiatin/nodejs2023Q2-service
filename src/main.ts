@@ -10,7 +10,9 @@ async function bootstrap() {
     bufferLogs: true,
   });
 
-  app.useLogger(app.get(CustomLogger));
+  const logger = app.get(CustomLogger);
+
+  app.useLogger(logger);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -33,6 +35,15 @@ async function bootstrap() {
   app.enableCors();
 
   await app.listen(port);
+
+  process.on('unhandledRejection', (error) => {
+    logger.error(error, 'UnhandledRejection');
+  });
+
+  process.on('uncaughtException', (error) => {
+    logger.error(error, 'UncaughtException');
+    process.exit(1);
+  });
 }
 
 bootstrap();
