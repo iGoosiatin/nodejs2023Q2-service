@@ -7,9 +7,11 @@ import { FavsModule } from './favs/favs.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { CustomLoggerModule } from './custom-logger/custom-logger.module';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
     TrackModule,
     FavsModule,
     AuthModule,
+    CustomLoggerModule,
   ],
   providers: [
     {
@@ -28,6 +31,10 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
       useClass: JwtAuthGuard,
     },
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
   ],
 })
 export class AppModule {}
