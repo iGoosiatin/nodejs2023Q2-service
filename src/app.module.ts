@@ -7,8 +7,9 @@ import { FavsModule } from './favs/favs.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JwtAuthGuard } from './auth/guards/jwt.guard';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    { provide: APP_FILTER, useClass: AllExceptionsFilter },
   ],
 })
 export class AppModule {}
