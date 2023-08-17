@@ -74,7 +74,11 @@ export class UserController {
       throw new UserNotFoundException();
     }
 
-    if (oldPassword !== user.password) {
+    const isPasswordValid = await this.userService.comparePasswords(
+      user.password,
+      oldPassword,
+    );
+    if (!isPasswordValid) {
       throw new WrongPasswordException();
     }
 
