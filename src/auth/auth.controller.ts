@@ -14,6 +14,7 @@ import { Public } from '../common/decorators/auth/isPublic';
 import { CreateUserDto } from '../common/dto/create-user.dto';
 import { UserEntity } from '../common/entities/user.entity';
 import { UserService } from '../user/user.service';
+import { JwtRefreshAuthGuard } from './guards/jwt-refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -36,6 +37,13 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-    return this.authService.login(req.user);
+    return this.authService.getTokenPair(req.user);
+  }
+
+  @Public()
+  @UseGuards(JwtRefreshAuthGuard)
+  @Post('refresh')
+  async refresh(@Request() req) {
+    return this.authService.getTokenPair(req.user);
   }
 }
