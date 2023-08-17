@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../common/dto/create-user.dto';
+import { UserDto } from '../common/dto/user.dto';
 import { DatabaseService } from '../database/database.service';
 
 import bcrypt from 'bcrypt';
@@ -31,7 +31,7 @@ export class UserService {
     return isValidLogin ? user : null;
   }
 
-  async create({ login, password }: CreateUserDto) {
+  async create({ login, password }: UserDto) {
     const data = { login, password: await this.hashPassword(password) };
     const user = await this.dbService.user.create({ data });
 

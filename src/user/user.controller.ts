@@ -15,7 +15,7 @@ import {
   UserNotFoundException,
   WrongPasswordException,
 } from './errors/user.errors';
-import { CreateUserDto } from '../common/dto/create-user.dto';
+import { UserDto } from '../common/dto/user.dto';
 import { UuidParams } from '../common/dto/uuid-param.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { UserEntity } from '../common/entities/user.entity';
@@ -56,7 +56,7 @@ export class UserController {
   @Post()
   @ApiCreate('User')
   @HttpCode(201)
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
+  async createUser(@Body() createUserDto: UserDto): Promise<UserEntity> {
     const user = await this.userService.create(createUserDto);
 
     return new UserEntity(user);
