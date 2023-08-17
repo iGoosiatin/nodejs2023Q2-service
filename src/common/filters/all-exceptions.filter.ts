@@ -7,12 +7,19 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { CustomLogger } from '../../custom-logger/custom-logger.service';
+import { ConfigService } from '@nestjs/config';
+import { logLevels } from '../constants/log-levels.constant';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new CustomLogger(AllExceptionsFilter.name);
 
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
+  constructor(
+    private readonly httpAdapterHost: HttpAdapterHost,
+    private configService: ConfigService,
+  ) {
+    this.logger.setLogLevels(logLevels[this.configService.get('LOG_LEVEL', 2)]);
+  }
 
   catch(exception: unknown, host: ArgumentsHost): void {
     // In certain situations `httpAdapter` might not be available in the

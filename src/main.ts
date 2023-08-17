@@ -4,15 +4,18 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CustomLogger } from './custom-logger/custom-logger.service';
+import { logLevels } from './common/constants/log-levels.constant';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   });
 
-  const logger = app.get(CustomLogger);
+  const configService = app.get(ConfigService);
 
+  const logger = app.get(CustomLogger);
   app.useLogger(logger);
+  app.useLogger(logLevels[configService.get('LOG_LEVEL', 2)]);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -20,7 +23,6 @@ async function bootstrap() {
     }),
   );
 
-  const configService = app.get(ConfigService);
   const port = configService.get('PORT', 4000);
 
   const config = new DocumentBuilder()
