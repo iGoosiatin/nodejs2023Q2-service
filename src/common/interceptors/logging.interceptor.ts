@@ -19,6 +19,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const httpCtx = context.switchToHttp();
+    const logContext = context.getClass().name;
     const { url, body, query, method } = httpCtx.getRequest();
     const { statusCode } = httpCtx.getResponse();
 
@@ -30,6 +31,7 @@ export class LoggingInterceptor implements NestInterceptor {
             `${method} ${url} ${statusCode} ${JSON.stringify(
               query,
             )} ${JSON.stringify(body)}`,
+            logContext,
           ),
         ),
       );

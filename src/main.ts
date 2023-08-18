@@ -39,11 +39,15 @@ async function bootstrap() {
   await app.listen(port);
 
   process.on('unhandledRejection', (error) => {
-    logger.error(error, 'UnhandledRejection');
+    if (error instanceof Error) {
+      logger.error(error.message, error.stack, 'UnhandledRejection');
+    } else {
+      logger.error(error as string, 'UnhandledRejection');
+    }
   });
 
   process.on('uncaughtException', (error) => {
-    logger.error(error, 'UncaughtException');
+    logger.error(error.message, error.stack, 'UncaughtException');
     process.exit(1);
   });
 }
