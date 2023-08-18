@@ -2,6 +2,26 @@ import { ConsoleLogger, LogLevel } from '@nestjs/common';
 import { writeFile } from 'fs/promises';
 
 export class CustomLogger extends ConsoleLogger {
+  verbose(message: string, context?: string) {
+    super.verbose(message, context || this.context);
+    const formattedMessage = this.formatCustomMessage(
+      'verbose',
+      message,
+      context || this.context,
+    );
+    this.writeToFile(formattedMessage);
+  }
+
+  debug(message: string, context?: string) {
+    super.debug(message, context || this.context);
+    const formattedMessage = this.formatCustomMessage(
+      'debug',
+      message,
+      context || this.context,
+    );
+    this.writeToFile(formattedMessage);
+  }
+
   log(message: string, context?: string) {
     super.log(message, context || this.context);
     const formattedMessage = this.formatCustomMessage(
@@ -13,7 +33,7 @@ export class CustomLogger extends ConsoleLogger {
   }
 
   warn(message: string, context?: string) {
-    super.log(message, context || this.context);
+    super.warn(message, context || this.context);
     const formattedMessage = this.formatCustomMessage(
       'warn',
       message,
@@ -29,9 +49,14 @@ export class CustomLogger extends ConsoleLogger {
       context || this.context,
     );
     if (stack) {
-      super.error(message, stack, this.context);
+      super.error(message, stack, context || this.context);
       this.writeToFile(formattedMessage, true);
-      this.writeToFile(stack, true);
+      const formattedStack = this.formatCustomMessage(
+        'error',
+        stack,
+        context || this.context,
+      );
+      this.writeToFile(formattedStack, true);
       return;
     }
     super.error(message, context || this.context);
@@ -41,7 +66,9 @@ export class CustomLogger extends ConsoleLogger {
   private writeToFile(formattedMessage: string, extraErrorLogging?: boolean) {
     writeFile('logs/log.txt', formattedMessage, { flag: 'a' });
     extraErrorLogging &&
-      writeFile('logs/error.log.txt', formattedMessage, { flag: 'a' });
+      writeFile('logs/error.log.txt', formattedMessage, {
+        flag: 'a',
+      });
   }
 
   private formatCustomMessage(

@@ -42,7 +42,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       path: url,
     };
 
-    this.logger.error(
+    this.logger.debug(
       `${method} ${url} ${httpStatus} ${JSON.stringify(query)} ${JSON.stringify(
         body,
       )}`,

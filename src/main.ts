@@ -41,14 +41,16 @@ async function bootstrap() {
   process.on('unhandledRejection', (error) => {
     if (error instanceof Error) {
       logger.error(error.message, error.stack, 'UnhandledRejection');
+    } else if (typeof error === 'object') {
+      logger.error(JSON.stringify(error), undefined, 'UnhandledRejection');
     } else {
-      logger.error(error as string, 'UnhandledRejection');
+      logger.error(String(error), undefined, 'UnhandledRejection');
     }
   });
 
   process.on('uncaughtException', (error) => {
     logger.error(error.message, error.stack, 'UncaughtException');
-    process.exit(1);
+    app.close();
   });
 }
 
