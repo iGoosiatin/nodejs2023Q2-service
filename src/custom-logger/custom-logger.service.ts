@@ -1,7 +1,10 @@
 import { ConsoleLogger, LogLevel } from '@nestjs/common';
-import { writeFile } from 'fs/promises';
+import { writeFile, watch, stat, rename } from 'fs/promises';
 
 export class CustomLogger extends ConsoleLogger {
+  private static LOG_FILE = 'logs/log.txt';
+  private static ERROR_LOG_FILE = 'logs/error.log.txt';
+
   verbose(message: string, context?: string) {
     super.verbose(message, context || this.context);
     const formattedMessage = this.formatCustomMessage(
@@ -63,10 +66,43 @@ export class CustomLogger extends ConsoleLogger {
     this.writeToFile(formattedMessage, true);
   }
 
+  async logRotate(limit: number) {
+    this.log(
+      `Log rotate enabled with limit size of ${limit}`,
+      CustomLogger.name,
+    );
+
+    const logWatcher = watch(CustomLogger.LOG_FILE);
+    for await (const event of logWatcher) {
+      if (event.eventType === 'change') {
+        const { size } = await stat(CustomLogger.LOG_FILE);
+        if (size > limit) {
+          rename(
+            CustomLogger.LOG_FILE,
+            `${CustomLogger.LOG_FILE}.${new Date().getTime()}`,
+          );
+        }
+      }
+    }
+
+    const errorLogWatcher = watch(CustomLogger.ERROR_LOG_FILE);
+    for await (const event of errorLogWatcher) {
+      if (event.eventType === 'change') {
+        const { size } = await stat(CustomLogger.ERROR_LOG_FILE);
+        if (size > limit) {
+          rename(
+            CustomLogger.ERROR_LOG_FILE,
+            `${CustomLogger.ERROR_LOG_FILE}.${new Date().getTime()}`,
+          );
+        }
+      }
+    }
+  }
+
   private writeToFile(formattedMessage: string, extraErrorLogging?: boolean) {
-    writeFile('logs/log.txt', formattedMessage, { flag: 'a' });
+    writeFile(CustomLogger.LOG_FILE, formattedMessage, { flag: 'a' });
     extraErrorLogging &&
-      writeFile('logs/error.log.txt', formattedMessage, {
+      writeFile(CustomLogger.ERROR_LOG_FILE, formattedMessage, {
         flag: 'a',
       });
   }

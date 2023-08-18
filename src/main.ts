@@ -16,6 +16,7 @@ async function bootstrap() {
   const logger = app.get(CustomLogger);
   app.useLogger(logger);
   app.useLogger(logLevels[configService.get('LOG_LEVEL', 2)]);
+  logger.logRotate(parseInt(configService.get('MAX_LOG_SIZE', '100000')));
 
   app.useGlobalPipes(
     new ValidationPipe({
