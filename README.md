@@ -43,8 +43,23 @@ DB_PASSWORD=your_strong_db_password
 DB_HOST=database
 DB_PORT=5432
 DB_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?schema=public
+
+CRYPT_SALT=10
+JWT_SECRET_KEY=secret123123
+JWT_SECRET_REFRESH_KEY=secret12341234
+TOKEN_EXPIRE_TIME=1h
+TOKEN_REFRESH_EXPIRE_TIME=24h
+
+LOG_LEVEL=2
 ```
-NOTE: For usage with docker compose provided containerized database, DB_HOST should be configured to be service name `db` it's aliases: `database` or `postgres`
+NOTES:
+- For usage with docker compose provided containerized database, DB_HOST should be configured to be service name `db` or it's aliases: `database` or `postgres`
+- Log levels available:
+  - 0 - error and below
+  - 1 - warn and below
+  - 2 - log and below (**in-app default**)
+  - 3 - debug and below
+  - 4 - verbose
 
 ## Testing
 
