@@ -55,3 +55,11 @@ async function bootstrap() {
 }
 
 bootstrap();
+
+// setTimeout(() => {
+//   throw new Error('Test error');
+// }, 3000);
+
+// setTimeout(() => {
+//   Promise.reject('Test rejected promise');
+// }, 2000);
