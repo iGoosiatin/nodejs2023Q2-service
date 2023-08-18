@@ -30,16 +30,18 @@ export class CustomLogger extends ConsoleLogger {
     );
     if (stack) {
       super.error(message, stack, this.context);
-      this.writeToFile(formattedMessage);
-      this.writeToFile(stack);
+      this.writeToFile(formattedMessage, true);
+      this.writeToFile(stack, true);
       return;
     }
     super.error(message, context || this.context);
-    this.writeToFile(formattedMessage);
+    this.writeToFile(formattedMessage, true);
   }
 
-  private writeToFile(formattedMessage: string) {
+  private writeToFile(formattedMessage: string, extraErrorLogging?: boolean) {
     writeFile('logs/log.txt', formattedMessage, { flag: 'a' });
+    extraErrorLogging &&
+      writeFile('logs/error.log.txt', formattedMessage, { flag: 'a' });
   }
 
   private formatCustomMessage(
