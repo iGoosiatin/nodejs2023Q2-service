@@ -51,6 +51,7 @@ TOKEN_EXPIRE_TIME=1h
 TOKEN_REFRESH_EXPIRE_TIME=24h
 
 LOG_LEVEL=2
+MAX_LOG_SIZE=5000
 ```
 NOTES:
 - For usage with docker compose provided containerized database, DB_HOST should be configured to be service name `db` or it's aliases: `database` or `postgres`
@@ -60,6 +61,7 @@ NOTES:
   - 2 - log and below (**in-app default**)
   - 3 - debug and below
   - 4 - verbose
+- Max log size in set in bytes
 
 ## Testing
 
