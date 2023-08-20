@@ -1,4 +1,4 @@
-export const buildNotFoundDescrition = (entity: string) =>
+export const buildNotFoundDescription = (entity: string) =>
   `${entity} not found`;
 
 export const buildInvalidUuidDescription = (id = 'id') =>
@@ -19,6 +19,8 @@ export const buildRemoveFromFavDescription = (entity: string) =>
 
 export const buildUnprocessableFavDescription = (entity: string) =>
   `Cannot add non-existing ${entity} favorites`;
+
+export const buildForbiddenDescription = (input: string) => `Bad ${input}`;
 
 export const successOperationDescription = 'Successful operation';
 

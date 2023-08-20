@@ -8,14 +8,14 @@ import {
 import {
   buildDeletionDescription,
   buildInvalidUuidDescription,
-  buildNotFoundDescrition,
+  buildNotFoundDescription,
 } from '../../utils/api.utils';
 
 export default function ApiDeleteById(entity: string) {
   return applyDecorators(
     ApiParam({ name: 'id', type: String, format: 'uuid' }),
     ApiNoContentResponse({ description: buildDeletionDescription(entity) }),
-    ApiNotFoundResponse({ description: buildNotFoundDescrition(entity) }),
+    ApiNotFoundResponse({ description: buildNotFoundDescription(entity) }),
     ApiBadRequestResponse({
       description: buildInvalidUuidDescription(),
     }),

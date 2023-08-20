@@ -5,6 +5,8 @@ import ApiDeleteById from './apiDeleteById.decorator';
 import ApiUpdateById from './apiUpdateById.decorator';
 import ApiAddFav from './apiAddFav.decorator';
 import ApiDeleteFav from './apiDeleteFav.decorator';
+import ApiLogin from './apiLogin.decorator';
+import ApiRefreshToken from './apiRefreshToken.decorator';
 
 export {
   ApiCreate,
@@ -14,4 +16,6 @@ export {
   ApiUpdateById,
   ApiAddFav,
   ApiDeleteFav,
+  ApiLogin,
+  ApiRefreshToken,
 };

@@ -15,7 +15,11 @@ import { UserDto } from '../common/dto/user.dto';
 import { UserEntity } from '../common/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { JwtRefreshAuthGuard } from './guards/jwt-refresh.guard';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiCreate, ApiLogin, ApiRefreshToken } from '../common/decorators/api';
+import { RefreshTokenDto } from './dto/refreshToken.dto';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -24,6 +28,7 @@ export class AuthController {
   ) {}
 
   @Public()
+  @ApiCreate('User')
   @Post('signup')
   @UseInterceptors(ClassSerializerInterceptor)
   @HttpCode(201)
@@ -34,6 +39,7 @@ export class AuthController {
   }
 
   @Public()
+  @ApiLogin('username/password')
   // @UseGuards(LocalAuthGuard) not using local strategy to have DTO validation
   @Post('login')
   async login(@Body() { login, password }: UserDto) {
@@ -44,7 +50,9 @@ export class AuthController {
     return this.authService.getTokenPair(user);
   }
 
-  @Public()
+  @Public() // Public means not accessToken jwt guard should be skipped - access token supposed to be expired
+  @ApiRefreshToken('refresh token')
+  @ApiBody({ type: RefreshTokenDto })
   @UseGuards(JwtRefreshAuthGuard)
   @Post('refresh')
   async refresh(@Request() req) {

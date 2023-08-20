@@ -8,7 +8,7 @@ import {
 import {
   successOperationDescription,
   buildInvalidUuidDescription,
-  buildNotFoundDescrition,
+  buildNotFoundDescription,
 } from '../../utils/api.utils';
 
 export default function ApiGetById(entity: string) {
@@ -18,6 +18,6 @@ export default function ApiGetById(entity: string) {
     ApiBadRequestResponse({
       description: buildInvalidUuidDescription(),
     }),
-    ApiNotFoundResponse({ description: buildNotFoundDescrition(entity) }),
+    ApiNotFoundResponse({ description: buildNotFoundDescription(entity) }),
   );
 }

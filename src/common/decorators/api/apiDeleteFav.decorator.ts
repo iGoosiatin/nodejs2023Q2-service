@@ -8,7 +8,7 @@ import {
 import {
   buildDeletionDescription,
   buildInvalidUuidDescription,
-  buildNotFoundDescrition,
+  buildNotFoundDescription,
 } from '../../utils/api.utils';
 
 export default function ApiDeleteFav(entity: string, alias?: string) {
@@ -16,7 +16,7 @@ export default function ApiDeleteFav(entity: string, alias?: string) {
     ApiParam({ name: 'id', type: String, format: 'uuid' }),
     ApiNoContentResponse({ description: buildDeletionDescription(entity) }),
     ApiNotFoundResponse({
-      description: buildNotFoundDescrition(alias || entity),
+      description: buildNotFoundDescription(alias || entity),
     }),
     ApiBadRequestResponse({
       description: buildInvalidUuidDescription(),

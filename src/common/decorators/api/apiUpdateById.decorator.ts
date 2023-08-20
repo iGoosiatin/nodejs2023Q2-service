@@ -7,7 +7,7 @@ import {
 } from '@nestjs/swagger';
 import {
   successOperationDescription,
-  buildNotFoundDescrition,
+  buildNotFoundDescription,
   buildInvalidUuidOrBodyDescription,
 } from '../../utils/api.utils';
 
@@ -18,6 +18,6 @@ export default function ApiUpdateById(entity: string) {
     ApiBadRequestResponse({
       description: buildInvalidUuidOrBodyDescription(),
     }),
-    ApiNotFoundResponse({ description: buildNotFoundDescrition(entity) }),
+    ApiNotFoundResponse({ description: buildNotFoundDescription(entity) }),
   );
 }
