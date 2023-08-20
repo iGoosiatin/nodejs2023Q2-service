@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiParam,
   ApiUnprocessableEntityResponse,
@@ -13,6 +14,7 @@ import {
 
 export default function ApiAddFav(entity: string) {
   return applyDecorators(
+    ApiBearerAuth(),
     ApiParam({ name: 'id', type: String, format: 'uuid' }),
     ApiCreatedResponse({ description: buildAddToFavDescription(entity) }),
     ApiBadRequestResponse({

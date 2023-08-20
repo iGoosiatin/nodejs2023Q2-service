@@ -13,7 +13,7 @@ services:
     networks:
       - home-library-network
     volumes:
-      - ./database/db_data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
   app:
     image: goosedev/home-library-service
     build: .
@@ -21,6 +21,7 @@ services:
     volumes:
       - ./src:/app/src
       - ./database:/app/database
+      - app-logs:/app/logs
     env_file:
       - .env
     depends_on:
@@ -35,3 +36,7 @@ services:
 
 networks:
   home-library-network:
+
+volumes:
+  app-logs:
+  db-data:

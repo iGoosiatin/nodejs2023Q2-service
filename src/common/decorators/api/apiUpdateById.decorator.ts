@@ -4,20 +4,22 @@ import {
   ApiOkResponse,
   ApiBadRequestResponse,
   ApiNotFoundResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import {
   successOperationDescription,
-  buildNotFoundDescrition,
+  buildNotFoundDescription,
   buildInvalidUuidOrBodyDescription,
 } from '../../utils/api.utils';
 
 export default function ApiUpdateById(entity: string) {
   return applyDecorators(
+    ApiBearerAuth(),
     ApiParam({ name: 'id', type: String, format: 'uuid' }),
     ApiOkResponse({ description: successOperationDescription }),
     ApiBadRequestResponse({
       description: buildInvalidUuidOrBodyDescription(),
     }),
-    ApiNotFoundResponse({ description: buildNotFoundDescrition(entity) }),
+    ApiNotFoundResponse({ description: buildNotFoundDescription(entity) }),
   );
 }

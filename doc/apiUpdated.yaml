@@ -9,6 +9,8 @@ paths:
           description: Successful operation
       tags: &ref_0
         - User
+      security:
+        - bearer: []
     post:
       operationId: UserController_createUser
       parameters: []
@@ -17,13 +19,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUserDto'
+              $ref: '#/components/schemas/UserDto'
       responses:
         '201':
           description: User created
         '400':
           description: Bad request. Missing required properties in the body
       tags: *ref_0
+      security:
+        - bearer: []
   /user/{id}:
     get:
       operationId: UserController_findUser
@@ -42,6 +46,8 @@ paths:
         '404':
           description: User not found
       tags: *ref_0
+      security:
+        - bearer: []
     put:
       operationId: UserController_updateUserPassword
       parameters:
@@ -67,6 +73,8 @@ paths:
         '404':
           description: User not found
       tags: *ref_0
+      security:
+        - bearer: []
     delete:
       operationId: UserController_removeUser
       parameters:
@@ -84,6 +92,8 @@ paths:
         '404':
           description: User not found
       tags: *ref_0
+      security:
+        - bearer: []
   /artist:
     get:
       operationId: ArtistController_findAll
@@ -93,6 +103,8 @@ paths:
           description: Successful operation
       tags: &ref_1
         - Artist
+      security:
+        - bearer: []
     post:
       operationId: ArtistController_create
       parameters: []
@@ -108,6 +120,8 @@ paths:
         '400':
           description: Bad request. Missing required properties in the body
       tags: *ref_1
+      security:
+        - bearer: []
   /artist/{id}:
     get:
       operationId: ArtistController_findOne
@@ -126,6 +140,8 @@ paths:
         '404':
           description: Artist not found
       tags: *ref_1
+      security:
+        - bearer: []
     put:
       operationId: ArtistController_update
       parameters:
@@ -151,6 +167,8 @@ paths:
         '404':
           description: Artist not found
       tags: *ref_1
+      security:
+        - bearer: []
     delete:
       operationId: ArtistController_remove
       parameters:
@@ -168,6 +186,8 @@ paths:
         '404':
           description: Artist not found
       tags: *ref_1
+      security:
+        - bearer: []
   /album:
     get:
       operationId: AlbumController_findAll
@@ -177,6 +197,8 @@ paths:
           description: Successful operation
       tags: &ref_2
         - Album
+      security:
+        - bearer: []
     post:
       operationId: AlbumController_create
       parameters: []
@@ -192,6 +214,8 @@ paths:
         '400':
           description: Bad request. Missing required properties in the body
       tags: *ref_2
+      security:
+        - bearer: []
   /album/{id}:
     get:
       operationId: AlbumController_findOne
@@ -210,6 +234,8 @@ paths:
         '404':
           description: Album not found
       tags: *ref_2
+      security:
+        - bearer: []
     put:
       operationId: AlbumController_update
       parameters:
@@ -235,6 +261,8 @@ paths:
         '404':
           description: Album not found
       tags: *ref_2
+      security:
+        - bearer: []
     delete:
       operationId: AlbumController_remove
       parameters:
@@ -252,6 +280,8 @@ paths:
         '404':
           description: Album not found
       tags: *ref_2
+      security:
+        - bearer: []
   /track:
     get:
       operationId: TrackController_findAll
@@ -261,6 +291,8 @@ paths:
           description: Successful operation
       tags: &ref_3
         - Track
+      security:
+        - bearer: []
     post:
       operationId: TrackController_create
       parameters: []
@@ -276,6 +308,8 @@ paths:
         '400':
           description: Bad request. Missing required properties in the body
       tags: *ref_3
+      security:
+        - bearer: []
   /track/{id}:
     get:
       operationId: TrackController_findOne
@@ -294,6 +328,8 @@ paths:
         '404':
           description: Track not found
       tags: *ref_3
+      security:
+        - bearer: []
     put:
       operationId: TrackController_update
       parameters:
@@ -319,6 +355,8 @@ paths:
         '404':
           description: Track not found
       tags: *ref_3
+      security:
+        - bearer: []
     delete:
       operationId: TrackController_remove
       parameters:
@@ -336,6 +374,8 @@ paths:
         '404':
           description: Track not found
       tags: *ref_3
+      security:
+        - bearer: []
   /favs:
     get:
       operationId: FavsController_findAll
@@ -345,6 +385,8 @@ paths:
           description: Successful operation
       tags: &ref_4
         - Favorites
+      security:
+        - bearer: []
   /favs/track/{id}:
     post:
       operationId: FavsController_saveFavTrack
@@ -363,6 +405,8 @@ paths:
         '422':
           description: Cannot add non-existing track favorites
       tags: *ref_4
+      security:
+        - bearer: []
     delete:
       operationId: FavsController_removeFavTrack
       parameters:
@@ -380,6 +424,8 @@ paths:
         '404':
           description: Favorite track not found
       tags: *ref_4
+      security:
+        - bearer: []
   /favs/album/{id}:
     post:
       operationId: FavsController_saveFavAlbum
@@ -398,6 +444,8 @@ paths:
         '422':
           description: Cannot add non-existing album favorites
       tags: *ref_4
+      security:
+        - bearer: []
     delete:
       operationId: FavsController_removeFavAlbum
       parameters:
@@ -415,6 +463,8 @@ paths:
         '404':
           description: Favorite album not found
       tags: *ref_4
+      security:
+        - bearer: []
   /favs/artist/{id}:
     post:
       operationId: FavsController_saveFavArtist
@@ -433,6 +483,8 @@ paths:
         '422':
           description: Cannot add non-existing artist favorites
       tags: *ref_4
+      security:
+        - bearer: []
     delete:
       operationId: FavsController_removeFavArtist
       parameters:
@@ -450,6 +502,61 @@ paths:
         '404':
           description: Favorite artist not found
       tags: *ref_4
+      security:
+        - bearer: []
+  /auth/signup:
+    post:
+      operationId: AuthController_signup
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+      responses:
+        '201':
+          description: User created
+        '400':
+          description: Bad request. Missing required properties in the body
+      tags: &ref_5
+        - Auth
+  /auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Bad request. Missing required properties in the body
+        '403':
+          description: Bad username/password
+      tags: *ref_5
+  /auth/refresh:
+    post:
+      operationId: AuthController_refresh
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenDto'
+      responses:
+        '200':
+          description: Successful operation
+        '401':
+          description: Bad request. Missing required properties in the body
+        '403':
+          description: Bad refresh token
+      tags: *ref_5
 info:
   title: Home Library Service
   description: Home music library service
@@ -459,8 +566,13 @@ tags: []
 servers:
   - url: http://localhost:4000
 components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
   schemas:
-    CreateUserDto:
+    UserDto:
       type: object
       properties:
         login:
@@ -525,3 +637,10 @@ components:
         - artistId
         - albumId
         - duration
+    RefreshTokenDto:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+      required:
+        - refreshToken
