@@ -4,6 +4,7 @@ import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiNoContentResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import {
   buildDeletionDescription,
@@ -13,6 +14,7 @@ import {
 
 export default function ApiDeleteById(entity: string) {
   return applyDecorators(
+    ApiBearerAuth(),
     ApiParam({ name: 'id', type: String, format: 'uuid' }),
     ApiNoContentResponse({ description: buildDeletionDescription(entity) }),
     ApiNotFoundResponse({ description: buildNotFoundDescription(entity) }),

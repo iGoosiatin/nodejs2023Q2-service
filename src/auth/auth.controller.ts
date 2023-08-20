@@ -28,10 +28,9 @@ export class AuthController {
   ) {}
 
   @Public()
-  @ApiCreate('User')
+  @ApiCreate('User', true)
   @Post('signup')
   @UseInterceptors(ClassSerializerInterceptor)
-  @HttpCode(201)
   async signup(@Body() createUserDto: UserDto): Promise<UserEntity> {
     const user = await this.userService.create(createUserDto);
 
@@ -42,6 +41,7 @@ export class AuthController {
   @ApiLogin('username/password')
   // @UseGuards(LocalAuthGuard) not using local strategy to have DTO validation
   @Post('login')
+  @HttpCode(200)
   async login(@Body() { login, password }: UserDto) {
     const user = await this.authService.validateUser(login, password);
     if (!user) {
@@ -55,6 +55,7 @@ export class AuthController {
   @ApiBody({ type: RefreshTokenDto })
   @UseGuards(JwtRefreshAuthGuard)
   @Post('refresh')
+  @HttpCode(200)
   async refresh(@Request() req) {
     return this.authService.getTokenPair(req.user);
   }

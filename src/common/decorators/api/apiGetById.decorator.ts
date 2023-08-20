@@ -4,6 +4,7 @@ import {
   ApiOkResponse,
   ApiBadRequestResponse,
   ApiNotFoundResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import {
   successOperationDescription,
@@ -13,6 +14,7 @@ import {
 
 export default function ApiGetById(entity: string) {
   return applyDecorators(
+    ApiBearerAuth(),
     ApiParam({ name: 'id', type: String, format: 'uuid' }),
     ApiOkResponse({ description: successOperationDescription }),
     ApiBadRequestResponse({

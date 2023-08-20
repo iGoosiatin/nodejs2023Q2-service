@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiParam,
@@ -13,6 +14,7 @@ import {
 
 export default function ApiDeleteFav(entity: string, alias?: string) {
   return applyDecorators(
+    ApiBearerAuth(),
     ApiParam({ name: 'id', type: String, format: 'uuid' }),
     ApiNoContentResponse({ description: buildDeletionDescription(entity) }),
     ApiNotFoundResponse({
