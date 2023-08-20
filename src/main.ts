@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CustomLogger } from './custom-logger/custom-logger.service';
 import { logLevels } from './common/constants/log-levels.constant';
+import { mkdir } from 'fs/promises';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -13,6 +14,11 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
+  try {
+    await mkdir('logs');
+  } catch {
+    // ensure that logs dir exists
+  }
   const logger = app.get(CustomLogger);
   app.useLogger(logger);
   app.useLogger(logLevels[configService.get('LOG_LEVEL', 2)]);

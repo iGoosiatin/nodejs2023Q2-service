@@ -1,20 +1,9 @@
-import { ConsoleLogger, ConsoleLoggerOptions, LogLevel } from '@nestjs/common';
-import { writeFile, watch, stat, rename, mkdir } from 'fs/promises';
+import { ConsoleLogger, LogLevel } from '@nestjs/common';
+import { writeFile, watch, stat, rename } from 'fs/promises';
 
 export class CustomLogger extends ConsoleLogger {
   private static LOG_FILE = 'logs/log.txt';
   private static ERROR_LOG_FILE = 'logs/error.log.txt';
-
-  constructor(context?: string, options?: ConsoleLoggerOptions) {
-    if (!context) {
-      super();
-    } else if (!options) {
-      super(context);
-    } else {
-      super(context, options);
-    }
-    this.makeLogDir();
-  }
 
   verbose(message: string, context?: string) {
     super.verbose(message, context || this.context);
@@ -126,11 +115,5 @@ export class CustomLogger extends ConsoleLogger {
     return `${this.getTimestamp()}\t${logLevel.toUpperCase()}\t[${
       context || ''
     }] ${message}\n`;
-  }
-
-  private async makeLogDir() {
-    try {
-      await mkdir('logs');
-    } catch {}
   }
 }
